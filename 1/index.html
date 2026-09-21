@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assignment 1</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });"></script>
+</head>
+<body>
+  <main class="notebook">
+    <h1>SYDE572 Assignment 1</h1>
+
+    <p>This can be found at: <a href="https://e3kang.github.io">https://e3kang.github.io</a>.</p>
+
+    <p><strong>AI Usage:</strong> I used AI to format this website, including setting the fonts, headings, positions and displays of plots, equations, and code. However, all math functions (Newton-Raphson, Golden Section, NR Multivariate) were coded by hand, and all equations and steps were worked out by hand. AI was then used to place the results onto the website.</p>
+
+
+    <h2>Question 1</h2>
+    <p>Solve using the analytical approach and two numerical approaches (Newton-Raphson, Golden Section Search) the shortest distance from y = x² + 5 to the points (0,0), (−4,0), (−8,0), (2,0), (6,0).</p>
+
+    <p><strong>For Newton-Raphson:</strong> I implemented the function from class notes, and added a <code>path</code> array that records (x, y) of each iteration. The plot function plots all these points (may be hard to see due to how close together they are) as well as the closest point it converged on. Each initial guess starts at x=0.</p>
+
+    <p><strong>For Golden Section:</strong> I implemented the function from class notes, and the <code>path</code> array records the bounds [a, b] of each iteration. The plot function shows the bounds shrinking over each iteration (indicated by darker shades), as well as the closest point. The initial boundary is [-10, 10] (not fully included in the visual).</p>
+
+    <div class="point-section">
+      <h3>Point 1: (0, 0)</h3>
+
+      <div class="method-block">
+        <h4>Analytical Approach (Calculus)</h4>
+        <p>$x_0 = 0$, $y_0 = 0$, $f(x) = x^2 + 5$, $f'(x) = 2x$</p>
+
+        <p>Sub in variables:</p>
+        $$0 = (x - 0) + \bigl(f(x) - 0\bigr) \cdot f'(x)$$
+        $$0 = x + f(x) \cdot f'(x)$$
+
+        <p>Sub in $f(x)$:</p>
+        $$0 = x + (x^2 + 5)\,2x$$
+        $$0 = 11x + 2x^3$$
+        $$0 = x\,(2x^2 + 11)$$
+
+        <p>Only real solution is $x = 0$. $f(0) = 5$. Point is $(0, 5)$.</p>
+
+        $$\text{distance} = d = \sqrt{(0-0)^2 + (5-0)^2} = \boxed{5}$$
+      </div>
+
+      <div class="method-block">
+        <h4>Newton-Raphson Method</h4>
+        <p>Iterations: 1. Answer: (0, 5). Distance: 5</p>
+        <img src="code/media_q1/1a_nr.png" alt="Newton-Raphson plot for point (0, 0)">
+      </div>
+
+      <div class="method-block">
+        <h4>Golden Section Search</h4>
+        <p>Iterations: 41. Final bound: [-1.6692e-08, 7.0710e-08]</p>
+        <img src="code/media_q1/1a_gs.png" alt="Golden Section Search plot for point (0, 0)">
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Point 2: (−4, 0)</h3>
+
+      <div class="method-block">
+        <h4>Analytical Approach (Calculus)</h4>
+        <p>$x_0 = -4$, $y_0 = 0$</p>
+
+        <p>Sub in variables:</p>
+        $$0 = \bigl(x - (-4)\bigr) + \bigl(f(x) - 0\bigr) f'(x)$$
+        $$0 = x + 4 + f(x) \cdot f'(x)$$
+
+        <p>Sub in $f(x)$ and $f'(x)$:</p>
+        $$0 = x + 4 + (x^2 + 5)\,2x$$
+        $$2x^3 + 11x + 4 = 0$$
+
+        <p>Real solution: $x = -0.35547$, $f(-0.35547) = 5.1264$. Point is $(-0.35547,\ 5.1264)$.</p>
+
+        $$\text{distance} = D = \sqrt{\bigl(-0.35547 - (-4)\bigr)^2 + (5.1264 - 0)^2} = \boxed{6.28988}$$
+      </div>
+
+      <div class="method-block">
+        <h4>Newton-Raphson Method</h4>
+        <p>Iterations: 4. Final number: -0.35546969287483454</p>
+        <img src="code/media_q1/1b_nr.png" alt="Newton-Raphson plot for point (−4, 0)">
+      </div>
+
+      <div class="method-block">
+        <h4>Golden Section Search</h4>
+        <p>Iterations: 40. Final bound: [-0.3554697266637665, -0.35546963926115976]</p>
+        <img src="code/media_q1/1b_gs.png" alt="Golden Section Search plot for point (−4, 0)">
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Point 3: (−8, 0)</h3>
+
+      <div class="method-block">
+        <h4>Analytical Approach (Calculus)</h4>
+        <p>$x_0 = -8$, $y_0 = 0$</p>
+
+        <p>Sub in variables:</p>
+        $$0 = \bigl(x - (-8)\bigr) + \bigl(f(x) - 0\bigr) \cdot f'(x)$$
+        $$0 = x + 8 + f(x) \cdot f'(x)$$
+
+        <p>Sub in $f(x)$ and $f'(x)$:</p>
+        $$0 = x + 8 + (x^2 + 5)\,2x$$
+        $$2x^3 + 11x + 8 = 0$$
+
+        <p>Real solution: $x = -0.67208$, $f(-0.67208) = 5.4517$. Point is $(-0.67208,\ 5.4517)$.</p>
+
+        $$\text{distance} = D = \sqrt{\bigl(-0.67208 - (-8)\bigr)^2 + (5.4517 - 0)^2} = \boxed{9.1334}$$
+      </div>
+
+      <div class="method-block">
+        <h4>Newton-Raphson Method</h4>
+        <p>Iterations: 5. Final number: -0.6720781267789521</p>
+        <img src="code/media_q1/1c_nr.png" alt="Newton-Raphson plot for point (−8, 0)">
+      </div>
+
+      <div class="method-block">
+        <h4>Golden Section Search</h4>
+        <p>Iterations: 40. Final bound: [-0.6720781633833134, -0.6720780759807067]</p>
+        <img src="code/media_q1/1c_gs.png" alt="Golden Section Search plot for point (−8, 0)">
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Point 4: (2, 0)</h3>
+
+      <div class="method-block">
+        <h4>Analytical Approach (Calculus)</h4>
+        <p>$x_0 = 2$, $y_0 = 0$</p>
+
+        <p>Sub in variables:</p>
+        $$0 = (x - 2) + \bigl(f(x) - 0\bigr) \cdot f'(x)$$
+        $$0 = x - 2 + f(x) \cdot f'(x)$$
+
+        <p>Sub in $f(x)$ and $f'(x)$:</p>
+        $$0 = x - 2 + (x^2 + 5)\,2x$$
+        $$2x^3 + 11x - 2 = 0$$
+
+        <p>Real solution: $x = 0.18074$, $f(0.18074) = 5.0327$. Point is $(0.18074,\ 5.0327)$.</p>
+
+        $$\text{distance} = D = \sqrt{(0.18074 - 2)^2 + (5.0327 - 0)^2} = \boxed{5.3514}$$
+      </div>
+
+      <div class="method-block">
+        <h4>Newton-Raphson Method</h4>
+        <p>Iterations: 4. Final number: 0.1807446044793497</p>
+        <img src="code/media_q1/1d_nr.png" alt="Newton-Raphson plot for point (2, 0)">
+      </div>
+
+      <div class="method-block">
+        <h4>Golden Section Search</h4>
+        <p>Iterations: 40. Final number: [0.1807445832783509, 0.18074467068095768]</p>
+        <img src="code/media_q1/1d_gs.png" alt="Golden Section Search plot for point (2, 0)">
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Point 5: (6, 0)</h3>
+
+      <div class="method-block">
+        <h4>Analytical Approach (Calculus)</h4>
+        <p>$x_0 = 6$, $y_0 = 0$</p>
+
+        <p>Sub in variables:</p>
+        $$0 = (x - 6) + \bigl(f(x) - 0\bigr) \cdot f'(x)$$
+        $$0 = x - 6 + f(x) \cdot f'(x)$$
+
+        <p>Sub in $f(x)$ and $f'(x)$:</p>
+        $$0 = x - 6 + (x^2 + 5)\,2x$$
+        $$2x^3 + 11x - 6 = 0$$
+
+        <p>Real solution: $x = 0.51990$, $f(0.51990) = 5.2703$. Point is $(0.51990,\ 5.2703)$.</p>
+
+        $$\text{distance} = D = \sqrt{(0.51990 - 6)^2 + (5.2703 - 0)^2} = \boxed{7.6031}$$
+      </div>
+
+      <div class="method-block">
+        <h4>Newton-Raphson Method</h4>
+        <p>Iterations: 4. Final number: 0.5199036610347048</p>
+        <img src="code/media_q1/1e_nr.png" alt="Newton-Raphson plot for point (6, 0)">
+      </div>
+
+      <div class="method-block">
+        <h4>Golden Section Search</h4>
+        <p>Iterations: 40. Final number: [0.5199036328329342, 0.519903720235541]</p>
+        <img src="code/media_q1/1e_gs.png" alt="Golden Section Search plot for point (6, 0)">
+      </div>
+    </div>
+
+    <h2>Question 2</h2>
+    <p>If we have the following set of points, we want to fit a parabola and a line to these points by minimizing the min squared error of the fitted function. Set up the MSE function. You will have at least 2 parameters to optimize for, the slope and intercept and similarly for the parabola. Using an analytical method and a numerical method (Newton-Raphson multivariate), firstly optimize for one parameter assuming a particular value for the other parameter and then optimize for the 2nd parameter in each iteration step. What is the MSE you get for the line and for the parabola? Show the worked out solution by hand and also supply python code (your own code) to automate the procedure. Produce plots of intermediate steps.</p>
+
+    <p>Points: $(0,\ 0.5)$, $(1,\ 1.5)$, $(2,\ 3.5)$, $(3,\ 7.5)$</p>
+
+    <div class="point-section">
+      <h3>Analytical Method</h3>
+
+      <div class="method-block">
+        <h4>Line</h4>
+
+        <p>$y = mx + b$</p>
+
+        <p>MSE function:</p>
+        $$\frac{1}{4} \sum \bigl[(mx_i + b) - y_i\bigr]^2$$
+
+        <p>Partial with respect to $m$:</p>
+        $$\frac{\partial \text{MSE}}{\partial m} = \frac{1}{4} \sum_{i=1}^{4} 2(mx_i + b - y_i) \cdot x_i = \frac{1}{2} \sum_{i=1}^{4} (mx_i + b - y_i) \cdot x_i$$
+
+        $$\frac{1}{2}\Bigl[(2m + b - 3.5)\,2 + (m + b - 1.5)\,1 + (3m + b - 7.5)\,3 + (b - 0.5)\,0\Bigr]$$
+
+        $$= \frac{1}{2}\bigl[14m + 6b - 31\bigr] = \boxed{7m + 3b - 15.5 = 0} \tag{1}$$
+
+        <p>Partial with respect to $b$:</p>
+        $$\frac{\partial \text{MSE}}{\partial b} = \frac{1}{4} \sum_{i=1}^{4} 2(mx_i + b - y_i) \cdot 1 = \frac{1}{2} \sum_{i=1}^{4} (mx_i + b - y_i)$$
+
+        $$\frac{1}{2}\bigl[6m + 3b - 12.5 + b - 0.5\bigr] = \boxed{3m + 2b - \frac{13}{2} = 0} \tag{2}$$
+
+        <p>$2(1) - 3(2) \implies$</p>
+        $$\begin{aligned}
+        14m + 6b &= 31 \\
+        9m + 6b &= \tfrac{39}{2}
+        \end{aligned}
+        \qquad
+        \begin{aligned}
+        5m &= 11.5 \\
+        m &= 2.3
+        \end{aligned}$$
+
+        $$7 \cdot 2.3 + 3b - 15.5 = 0 \qquad 3b = -0.6 \qquad b = -0.2$$
+
+        <div class="answer">
+          $$\text{Line: } y = 2.3x - 0.2$$
+        </div>
+
+        $$\begin{aligned}
+        \text{MSE} &= \frac{1}{4}\Bigl[(2.3 \cdot 0 - 0.2 - 0.5)^2 + (2.3 \cdot 2 - 0.2 - 3.5)^2 \\
+        &\qquad + (2.3 \cdot 1 - 0.2 - 1.5)^2 + (2.3 \cdot 3 - 0.2 - 7.5)^2\Bigr]
+        \end{aligned}$$
+
+        <div class="answer">
+          $$\text{MSE} = 0.575$$
+        </div>
+      </div>
+
+      <div class="method-block">
+        <h4>Parabola</h4>
+
+        <p>$y = ax^2 + bx + c$</p>
+
+        $$\text{MSE} = \frac{1}{4} \sum_{i=1}^{4} \bigl[ax_i^2 + bx_i + c - y_i\bigr]^2$$
+
+        $$\frac{\partial \text{MSE}}{\partial a} = \frac{1}{2} \sum_{i=1}^{4} \bigl(ax_i^2 + bx_i + c - y_i\bigr) \cdot (x_i)^2$$
+
+        $$\frac{\partial \text{MSE}}{\partial b} = \frac{1}{2} \sum_{i=1}^{4} \bigl(ax_i^2 + bx_i + c - y_i\bigr)(x_i)$$
+
+        $$\frac{\partial \text{MSE}}{\partial c} = \frac{1}{2} \sum_{i=1}^{4} \bigl(ax_i^2 + bx_i + c - y_i\bigr)$$
+
+        <div class="table-wrap">
+          <table>
+            <tr>
+              <th></th>
+              <th>$r = ax_i^2 + bx_i + c - y_i$</th>
+              <th>$\partial a$</th>
+              <th>$\partial b$</th>
+              <th>$\partial c$</th>
+            </tr>
+            <tr>
+              <td>$(0,\ 0.5)$</td>
+              <td>$c - 0.5$</td>
+              <td>$0$</td>
+              <td>$0$</td>
+              <td>$\frac{1}{2}(c - 0.5)$</td>
+            </tr>
+            <tr>
+              <td>$(2,\ 3.5)$</td>
+              <td>$4a + 2b + c - 3.5$</td>
+              <td>$8a + 4b + 2c - 7$</td>
+              <td>$4a + 2b + c - 3.5$</td>
+              <td>$2a + b + \frac{1}{2}c - 1.75$</td>
+            </tr>
+            <tr>
+              <td>$(1,\ 1.5)$</td>
+              <td>$a + b + c - 1.5$</td>
+              <td>$\frac{1}{2}a + \frac{1}{2}b + \frac{1}{2}c - 0.75$</td>
+              <td>$\frac{1}{2}a + \frac{1}{2}b + \frac{1}{2}c - 0.75$</td>
+              <td>$\frac{1}{2}a + \frac{1}{2}b + \frac{1}{2}c - 0.75$</td>
+            </tr>
+            <tr>
+              <td>$(3,\ 7.5)$</td>
+              <td>$9a + 3b + c - 7.5$</td>
+              <td>$\frac{81}{2}a + \frac{27}{2}b + \frac{9}{2}c - 33.75$</td>
+              <td>$\frac{27}{2}a + \frac{9}{2}b + \frac{3}{2}c - 11.25$</td>
+              <td>$\frac{9}{2}a + \frac{3}{2}b + \frac{1}{2}c - 3.75$</td>
+            </tr>
+          </table>
+        </div>
+
+        <p>Summing each column:</p>
+        $$49a + 18b + 7c = 41.5 \tag{1}$$
+        $$18a + 7b + 3c = 15.5 \tag{2}$$
+        $$7a + 3b + 2c = 6.5 \tag{3}$$
+
+        <div class="answer">
+          $$a = 0.75, \quad b = 0.05, \quad c = 0.55$$
+        </div>
+
+        <div class="answer">
+          $$\text{Parabola: } y = 0.75x^2 + 0.05x + 0.55$$
+        </div>
+
+        $$\begin{aligned}
+        \text{MSE} &= \frac{1}{4}\Bigl[(0.55 - 0.5)^2 + (4 \cdot 0.75 + 2 \cdot 0.05 + 0.55 - 3.5)^2 \\
+        &\qquad + (0.75 + 0.05 + 0.55 - 1.5)^2 \\
+        &\qquad + (9 \cdot 0.75 + 3 \cdot 0.05 + 0.55 - 7.5)^2\Bigr]
+        \end{aligned}$$
+
+        <div class="answer">
+          $$\text{MSE} = 0.0125$$
+        </div>
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Numerical Method</h3>
+
+      <div class="method-block">
+        <h4>Line: NR Multivariate</h4>
+        <p>Formula: $y = mx + b$. Initial guess: $m = 0$, $b = 0$</p>
+        <div class="answer">
+          $$\text{Line: } y = 2.3x - 0.2$$
+        </div>
+        <p>MSE: 0.575. Iterations: 32.</p>
+        <img src="code/media_q2/line.png" alt="Newton-Raphson multivariate plot of each iteration's line converging to the line of best fit">
+      </div>
+
+      <div class="method-block">
+        <h4>Parabola: NR Multivariate</h4>
+        <p>Formula: $y = ax^2 + bx + c$. Initial guess: $a = 0$, $b = 0$, $c = 0$</p>
+        <div class="answer">
+          $$\text{Parabola: } y = 0.75x^2 + 0.05x + 0.55$$
+        </div>
+        <p>MSE: 0.0125. Iterations: 276.</p>
+        <img src="code/media_q2/parabola.png" alt="Newton-Raphson multivariate plot of each iteration's parabola converging to the parabola of best fit">
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <a href="../index.html">&larr; Back to portfolio</a>
+  </main>
+</body>
+</html>

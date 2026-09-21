@@ -1,0 +1,91 @@
+/* Jupyter Notebook–inspired styling for assignment pages */
+
+:root {
+  --surface: #ffffff;
+  --cell-bg: #f7f7f7;
+  --content: #212121;
+  --muted: #999999;
+  --accent: #307fc1;
+  --border: #cccccc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 40px 24px;
+  background: var(--surface);
+  color: var(--content);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+main,
+.notebook {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-weight: 400;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+h1 { font-size: 26px; }
+h2 { font-size: 20px; }
+h3 { font-size: 17px; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p, ul, ol {
+  font-size: 14px;
+}
+
+/* Notebook "cell" look for code/output blocks */
+pre,
+code,
+.cell {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 13px;
+}
+
+pre,
+.cell {
+  background: var(--cell-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+  padding: 10px 14px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+code {
+  background: var(--cell-bg);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* "In [ ]:" style prompt label, the one distinctly-notebook touch */
+.prompt {
+  display: block;
+  color: var(--muted);
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  margin-bottom: 4px;
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assignment 2</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ]
+    });"></script>
+</head>
+<body>
+  <main class="notebook">
+    <h1>SYDE572 Assignment 2</h1>
+
+    <p>This can be found at: <a href="https://e3kang.github.io">https://e3kang.github.io</a>.</p>
+
+    <p><strong>AI Usage:</strong> I used AI to format this website, including setting the fonts, headings, positions and displays of plots, equations, and code for readability. AI was used to place calculated results onto the website.</p>
+
+
+    <h2>Question 1: Linear Regression</h2>
+    <p>In this question, you will implement linear basis function regression with polynomial and Gaussian basis. The dataset is the Housing dataset from the UCI repository. The task is to predict median house value from features describing a town.</p>
+
+    <div class="point-section">
+      <h3>Part 1a: Polynomial Basis Function</h3>
+      <p>Using the first 100 points as training data, and the remainder as testing data, fit a polynomial basis function regression for degree 1 to degree 7 polynomials. Do not use any regularization. Plot training error and test error (in RMS error) versus polynomial degree.</p>
+
+      <div class="method-block">
+        <h4>Training Error vs. Polynomial Degree</h4>
+        <img src="plots/1a_training_error.png" alt="Training RMS error versus polynomial degree">
+      </div>
+
+      <div class="method-block">
+        <h4>Test Error vs. Polynomial Degree</h4>
+        <img src="plots/1a_test_error.png" alt="Test RMS error versus polynomial degree">
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p>Training error seems very minimal, and a degree 4-5 polynomial fits the training data quite well.</p>
+        <p>As for the test data, the error varies wildly. The error is most extreme at degrees 4-6, and interestingly enough, a line is the best fit for the given data (although still having an error of around 36.44, or $36k off).</p>
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Part 1b: Degree 1 Weights</h3>
+      <p>Run your polynomial regression using a degree 1 polynomial. Examine the learned weights. What value is chosen for $w_5$, the weight on the 5th feature (average number of rooms per dwelling)? What value is chosen for the weight on the 7th feature (weighted distance to five Boston employment centers)? Do these 2 weights seem reasonable?</p>
+
+      <div class="method-block">
+        <h4>All Weights</h4>
+        <p>[-37.9042, -3.45595, 0.00538, -0.16878, 0.0, 21.5154, 8.59096, -0.07924, 0.00763, -0.13991, -0.00763, 0.15456, 0.00664, 0.02623]</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Weight on the 5th Feature (Average Number of Rooms per Dwelling)</h4>
+        <p>8.59096</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Weight on the 7th Feature (Weighted Distance to Employment Centers)</h4>
+        <p>0.00763</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p>These weights seem reasonable. It shows that adding an extra room contributes roughly $8,590 to the value of the home, whereas a closer distance to employment centers does not affect the value of a home that much.</p>
+        <p>This makes sense since a house with more rooms is usually significantly more expensive, while the distance to employment centers does not dictate its value that much.</p>
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Part 1c: 1D Polynomial Regression Visualization</h3>
+      <p>It is difficult to visualize the results of high-dimensional regression. Instead, only use one of the features and again perform polynomial regression. Produce plots of the training data points, learned polynomial, and test data points.</p>
+
+      <p>Feature used: proportion of residential land zoned for lots over 25,000 sq ft (ZN).</p>
+
+      <div class="method-block">
+        <h4>Degree 1 (Low-Order)</h4>
+        <img src="plots/1c_degree1.png" alt="Degree 1 polynomial fit against training and test data">
+        <p>Training error: 5.6951, Test error: 9.3523</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Degree 4 (Medium-Order)</h4>
+        <img src="plots/1c_degree4.png" alt="Degree 4 polynomial fit against training and test data">
+        <p>Training error: 5.6506, Test error: 9.3897</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Degree 7 (High-Order)</h4>
+        <img src="plots/1c_degree7.png" alt="Degree 7 polynomial fit against training and test data">
+        <p>Training error: 5.5006, Test error: 10.4224</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p>The low-order polynomial has the lowest RMSE, fitting the data the best.</p>
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Part 1d: L2-Regularized Polynomial Regression</h3>
+      <p>Implement L2-regularized regression using the first 100 points, and only the 2nd feature. Fit a degree 8 polynomial using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</p>
+
+      <p>Feature used: #2, proportion of residential land zoned for lots over 25,000 sq ft (ZN).</p>
+        <p>The code shuffles the 100 training points (in case nearby datapoints had similarities), then split into 10 folds and evaluated RMSE. The dashed line represents lambda = 0, so the unregularized plot.</p>
+
+      <div class="method-block">
+        <h4>Average Validation Error vs. Regularization Constant</h4>
+        <img src="plots/1d_avg_validation_error.png" alt="Average 10-fold validation RMSE versus regularization constant lambda on a log scale">
+      </div>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <table>
+          <thead>
+            <tr><th>&lambda;</th><th>Average validation RMSE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0 (unregularized)</td><td>12.42</td></tr>
+            <tr><td>0.01</td><td><strong>5.81</strong></td></tr>
+            <tr><td>0.1</td><td>8.82</td></tr>
+            <tr><td>1</td><td>9.24</td></tr>
+            <tr><td>10</td><td>10.13</td></tr>
+            <tr><td>100</td><td>15.75</td></tr>
+            <tr><td>1000</td><td>19.92</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p><strong>Chosen &lambda; = 0.01</strong>, it has the lowest average validation RMSE (5.81).</p>
+        <p>Without regularization, the degree 8 polynomial overfits the small training folds and the validation error is high (12.42). A very small amount of regularization decreases error by over half. As &lambda; grows past 0.01 the error rises steadily, since the weights are shrunk too aggressively and the model underfits. At &lambda; = 100 and 1000 it performs worse than the unregularized fit.</p>
+      </div>
+    </div>
+
+    <h2>Question 2: Gaussian Basis Functions</h2>
+    <p>Implement linear basis function regression with Gaussian basis functions. For the centers &mu;<sub>j</sub>, use randomly chosen training data points.</p>
+
+    <div class="point-section">
+      <h3>Part 2e: Gaussian Basis Function Regression</h3>
+      <p>Use the first 100 points as training data, and the remainder as testing data. Fit a Gaussian basis function regression using 5, 15, 25, ..., 95 basis functions (generate a random permutation of points and pick the first K points as the centers of the basis functions). Do not use any regularization. Plot the training error and test error (in RMS error) versus number of basis functions.</p>
+
+      <p>Feature used: proportion of residential land zoned for lots over 25,000 sq ft (ZN). 
+        
+        Each basis function is &phi;<sub>j</sub>(x) = exp(a &middot; (x &minus; &mu;<sub>j</sub>)<sup>2</sup>), plus a constant bias column.</p>
+        
+      <p>Where I picked width parameter (a)  as a = &minus;1 / (2&sigma;<sup>2</sup>) with &sigma; equal to half the median distance between training points, giving a = &minus;0.0032.</p>
+
+      <div class="method-block">
+        <h4>Training and Test RMS Error vs. Number of Basis Functions</h4>
+        <img src="plots/2e_plot.png" alt="Training and test RMS error versus number of Gaussian basis functions">
+      </div>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <table>
+          <thead>
+            <tr><th>K (basis functions)</th><th>Training RMSE</th><th>Test RMSE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>5</td><td>5.67</td><td>9.52</td></tr>
+            <tr><td>15</td><td>5.64</td><td>9.62</td></tr>
+            <tr><td>25</td><td>5.60</td><td>12.86</td></tr>
+            <tr><td>35</td><td>5.57</td><td>13.78</td></tr>
+            <tr><td>45</td><td>5.52</td><td>25.25</td></tr>
+            <tr><td>55</td><td>5.52</td><td>25.25</td></tr>
+            <tr><td>65</td><td>5.44</td><td>76.02</td></tr>
+            <tr><td>75</td><td>5.44</td><td>76.02</td></tr>
+            <tr><td>85</td><td>5.44</td><td>76.02</td></tr>
+            <tr><td>95</td><td>5.41</td><td>4252.98</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p>Training error decreases steadily, which is expected since more basis functions naturally fit training data better.</p>
+
+        <p>Test error, on the other hand, increases when more basis functions are added. This is overfitting, since the more basis functions are used, it generalizes worse.</p>
+          
+        <p>One interesting point is the test error becoming disproportionally large at K=95. After debugging, I found the prediction range to be small at low K (eg. at K=5, it predicted [21.74,34.98]). However, this range grew larger and then became [14.16, 23333.08] at K=95, creating the explosion in test error. It could be the result of numerical instability, as the K=95 weights had both positive and negative weights in the order of millions (10^6).</p>
+      </div>
+    </div>
+
+    <div class="point-section">
+      <h3>Part 2f: L2-Regularized Gaussian Regression</h3>
+      <p>Implement L2-regularized regression. Again, use the first 100 points, and this time use all 13 features. Fit a regression model with 90 basis functions using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</p>
+
+      <p><strong>Normalization:</strong> Every feature was standardized with the z-score formula x<sub>norm,j</sub> = (x<sub>j</sub> &minus; &mu;<sub>j</sub>) / &sigma;<sub>j</sub>, where &mu;<sub>j</sub> and &sigma;<sub>j</sub> are the mean and standard deviation of feature j over the training points only (a feature with &sigma;<sub>j</sub> = 0 is left unchanged). The targets y were not normalized.</p>
+
+      <p>The width a = &minus;0.0935 was chosen with the same median-distance rule as in 2e, computed on the standardized features. The unregularized case (&lambda; = 0) is drawn as a dashed line.</p>
+
+      <div class="method-block">
+        <h4>Average Validation Error vs. Regularization Constant</h4>
+        <img src="plots/2f_gaussian_regression_reg.png" alt="Average 10-fold validation RMSE versus regularization constant lambda on a log scale, with 90 Gaussian basis functions">
+      </div>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <table>
+          <thead>
+            <tr><th>&lambda;</th><th>Average validation RMSE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0 (unregularized)</td><td>5.32</td></tr>
+            <tr><td>0.01</td><td>2.22</td></tr>
+            <tr><td>0.1</td><td><strong>2.21</strong></td></tr>
+            <tr><td>1</td><td>2.81</td></tr>
+            <tr><td>10</td><td>4.92</td></tr>
+            <tr><td>100</td><td>9.05</td></tr>
+            <tr><td>1000</td><td>16.42</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="method-block">
+        <h4>Comments</h4>
+        <p><strong>Chosen &lambda; = 0.1</strong>, which has the lowest average validation RMSE (2.21). &lambda; = 0.01 is close by, so any value in between works.</p>
+        <p>With 90 basis functions and only 90 training points per fold, the unregularized model can interpolate the training data exactly and overfits, which we saw in part e. A small amount of L2 regularization reduces the error by more than half. As &lambda; grows past 0.1 the weights are shrunk too aggressively and the error increases again. At &lambda; = 100 and 1000 it is worse than no regularization.</p>
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <a href="../index.html">&larr; Back to portfolio</a>
+  </main>
+</body>
+</html>

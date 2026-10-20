@@ -89,3 +89,62 @@ pre code {
   font-size: 12px;
   margin-bottom: 4px;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+  background: var(--cell-bg);
+  border: 1px dashed var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 10px 0 20px;
+}
+
+.point-section {
+  margin-top: 36px;
+}
+
+.method-block {
+  margin: 16px 0 20px;
+}
+
+/* Highlighted final answers */
+.answer {
+  background: var(--cell-bg);
+  border: 2px solid var(--accent);
+  border-radius: 2px;
+  padding: 4px 14px;
+  margin: 16px 0;
+}
+
+/* Derivative / working tables */
+.table-wrap {
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: var(--cell-bg);
+  font-weight: 600;
+}

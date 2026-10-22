@@ -23,11 +23,11 @@
 
 
     <h2>Question 1: Linear Regression</h2>
-    <p>In this question, you will implement linear basis function regression with polynomial and Gaussian basis. The dataset is the Housing dataset from the UCI repository. The task is to predict median house value from features describing a town.</p>
+    <p><strong>In this question, you will implement linear basis function regression with polynomial and Gaussian basis. The dataset is the Housing dataset from the UCI repository. The task is to predict median house value from features describing a town.</strong></p>
 
     <div class="point-section">
       <h3>Part 1a: Polynomial Basis Function</h3>
-      <p>Using the first 100 points as training data, and the remainder as testing data, fit a polynomial basis function regression for degree 1 to degree 7 polynomials. Do not use any regularization. Plot training error and test error (in RMS error) versus polynomial degree.</p>
+      <p><strong>Using the first 100 points as training data, and the remainder as testing data, fit a polynomial basis function regression for degree 1 to degree 7 polynomials. Do not use any regularization. Plot training error and test error (in RMS error) versus polynomial degree.</strong></p>
 
       <div class="method-block">
         <h4>Training Error vs. Polynomial Degree</h4>
@@ -48,7 +48,7 @@
 
     <div class="point-section">
       <h3>Part 1b: Degree 1 Weights</h3>
-      <p>Run your polynomial regression using a degree 1 polynomial. Examine the learned weights. What value is chosen for $w_5$, the weight on the 5th feature (average number of rooms per dwelling)? What value is chosen for the weight on the 7th feature (weighted distance to five Boston employment centers)? Do these 2 weights seem reasonable?</p>
+      <p><strong>Run your polynomial regression using a degree 1 polynomial. Examine the learned weights. What value is chosen for $w_6$, the weight on the 6th feature (average number of rooms per dwelling)? What value is chosen for the weight on the 8th feature (weighted distance to five Boston employment centers)? Do these 2 weights seem reasonable?</strong></p>
 
       <div class="method-block">
         <h4>All Weights</h4>
@@ -56,25 +56,25 @@
       </div>
 
       <div class="method-block">
-        <h4>Weight on the 5th Feature (Average Number of Rooms per Dwelling)</h4>
+        <h4>Weight on the 6th Feature (Average Number of Rooms per Dwelling)</h4>
         <p>8.59096</p>
       </div>
 
       <div class="method-block">
-        <h4>Weight on the 7th Feature (Weighted Distance to Employment Centers)</h4>
+        <h4>Weight on the 8th Feature (Weighted Distance to Employment Centers)</h4>
         <p>0.00763</p>
       </div>
 
       <div class="method-block">
         <h4>Comments</h4>
         <p>These weights seem reasonable. It shows that adding an extra room contributes roughly $8,590 to the value of the home, whereas a closer distance to employment centers does not affect the value of a home that much.</p>
-        <p>This makes sense since a house with more rooms is usually significantly more expensive, while the distance to employment centers does not dictate its value that much.</p>
+        <p>This makes sense since a house with more rooms (eg. bedrooms) is usually significantly more expensive, while the distance to employment centers does not dictate its value that much.</p>
       </div>
     </div>
 
     <div class="point-section">
       <h3>Part 1c: 1D Polynomial Regression Visualization</h3>
-      <p>It is difficult to visualize the results of high-dimensional regression. Instead, only use one of the features and again perform polynomial regression. Produce plots of the training data points, learned polynomial, and test data points.</p>
+      <p><strong>It is difficult to visualize the results of high-dimensional regression. Instead, only use one of the features and again perform polynomial regression. Produce plots of the training data points, learned polynomial, and test data points.</strong></p>
 
       <p>Feature used: proportion of residential land zoned for lots over 25,000 sq ft (ZN).</p>
 
@@ -98,13 +98,13 @@
 
       <div class="method-block">
         <h4>Comments</h4>
-        <p>The low-order polynomial has the lowest RMSE, fitting the data the best.</p>
+        <p>The low-order polynomial has the lowest RMSE, fitting the data the best. The high-degree polynomial very obviously curves to fit the training data, but since it is more complex (higher degree), it overfits and performs worse on test data. This shows the need for regularization.</p>
       </div>
     </div>
 
     <div class="point-section">
       <h3>Part 1d: L2-Regularized Polynomial Regression</h3>
-      <p>Implement L2-regularized regression using the first 100 points, and only the 2nd feature. Fit a degree 8 polynomial using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</p>
+      <p><strong>Implement L2-regularized regression using the first 100 points, and only the 2nd feature. Fit a degree 8 polynomial using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</strong></p>
 
       <p>Feature used: #2, proportion of residential land zoned for lots over 25,000 sq ft (ZN).</p>
         <p>The code shuffles the 100 training points (in case nearby datapoints had similarities), then split into 10 folds and evaluated RMSE. The dashed line represents lambda = 0, so the unregularized plot.</p>
@@ -140,11 +140,11 @@
     </div>
 
     <h2>Question 2: Gaussian Basis Functions</h2>
-    <p>Implement linear basis function regression with Gaussian basis functions. For the centers &mu;<sub>j</sub>, use randomly chosen training data points.</p>
+    <p><strong>Implement linear basis function regression with Gaussian basis functions. For the centers &mu;<sub>j</sub>, use randomly chosen training data points.</strong></p>
 
     <div class="point-section">
       <h3>Part 2e: Gaussian Basis Function Regression</h3>
-      <p>Use the first 100 points as training data, and the remainder as testing data. Fit a Gaussian basis function regression using 5, 15, 25, ..., 95 basis functions (generate a random permutation of points and pick the first K points as the centers of the basis functions). Do not use any regularization. Plot the training error and test error (in RMS error) versus number of basis functions.</p>
+      <p><strong>Use the first 100 points as training data, and the remainder as testing data. Fit a Gaussian basis function regression using 5, 15, 25, ..., 95 basis functions (generate a random permutation of points and pick the first K points as the centers of the basis functions). Do not use any regularization. Plot the training error and test error (in RMS error) versus number of basis functions.</strong></p>
 
       <p>Feature used: proportion of residential land zoned for lots over 25,000 sq ft (ZN). 
         
@@ -190,7 +190,7 @@
 
     <div class="point-section">
       <h3>Part 2f: L2-Regularized Gaussian Regression</h3>
-      <p>Implement L2-regularized regression. Again, use the first 100 points, and this time use all 13 features. Fit a regression model with 90 basis functions using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</p>
+      <p><strong>Implement L2-regularized regression. Again, use the first 100 points, and this time use all 13 features. Fit a regression model with 90 basis functions using each value in {0, 0.01, 0.1, 1, 10, 100, 1000} for &lambda;. Use 10-fold cross-validation to decide on the best value of &lambda;. Produce a semilogx plot of average validation set error versus the regularizing constant &lambda;.</strong></p>
 
       <p><strong>Normalization:</strong> Every feature was standardized with the z-score formula x<sub>norm,j</sub> = (x<sub>j</sub> &minus; &mu;<sub>j</sub>) / &sigma;<sub>j</sub>, where &mu;<sub>j</sub> and &sigma;<sub>j</sub> are the mean and standard deviation of feature j over the training points only (a feature with &sigma;<sub>j</sub> = 0 is left unchanged). The targets y were not normalized.</p>
 
@@ -198,7 +198,7 @@
 
       <div class="method-block">
         <h4>Average Validation Error vs. Regularization Constant</h4>
-        <img src="plots/2f_gaussian_regression_reg.png" alt="Average 10-fold validation RMSE versus regularization constant lambda on a log scale, with 90 Gaussian basis functions">
+        <img src="plots/2f_gaussian_regression_reg.png" style="max-width: 640px;" alt="Average 10-fold validation RMSE versus regularization constant lambda on a log scale, with 90 Gaussian basis functions">
       </div>
 
       <div class="method-block">

@@ -30,7 +30,7 @@ main,
 }
 
 h1, h2, h3 {
-  font-weight: 400;
+  font-weight: 700;
   border-bottom: 1px solid var(--border);
   padding-bottom: 6px;
 }

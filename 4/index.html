@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assignment 4</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .plain-headings h3, .plain-headings h4 { font-weight: 400; }
+    .review { font-family: inherit; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main class="notebook">
+    <h1>SYDE572 Assignment 4</h1>
+
+    <p>This can be found at: <a href="https://e3kang.github.io">https://e3kang.github.io</a>.</p>
+
+    <p><strong>AI Usage:</strong> I used AI to format this website, including setting the fonts, headings, positions and displays of dataset and numbers.</p>
+
+    <h2>Reading the Review Data</h2>
+
+
+    <div class="point-section">
+      <div class="method-block">
+        <h4>Dataset</h4>
+        <p>The first 80% of the lines are for training and the last 20% are for evaluation.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Quantity</th><th>Value</th></tr>
+            <tr><td>Total reviews</td><td>11,914 (6,000 pos, 5,914 neg)</td></tr>
+            <tr><td>Training documents (80%)</td><td>9,531</td></tr>
+            <tr><td>Evaluation documents (20%)</td><td>2,383</td></tr>
+            <tr><td>Vocabulary size (distinct words in the training set)</td><td>52,392</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <h2>Sanity Checks</h2>
+
+    <div class="point-section plain-headings">
+      <h3>Sanity Check 1</h3>
+      <p><strong>Try to apply score_doc_label to a few very short documents. The probability of a positive document containing just the word "great" should be a small number, probably around 0.001&ndash;0.002. In any case, it should be higher than the probability of a negative document with the same word. Conversely, if you try the word "bad" instead, the negative score should be higher than the positive.</strong></p>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Document</th><th>P(document, pos)</th><th>P(document, neg)</th><th>Higher</th></tr>
+            <tr><td><code>['great']</code></td><td>0.001321</td><td>0.000528</td><td>pos</td></tr>
+            <tr><td><code>['bad']</code></td><td>0.000172</td><td>0.000455</td><td>neg</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-section plain-headings">
+      <h3>Sanity Check 2</h3>
+      <p><strong>Your function score_doc_label should not crash for the document ['a', 'top-quality', 'performance'].</strong></p>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Document</th><th>log P(document, pos)</th><th>log P(document, neg)</th></tr>
+            <tr><td><code>['a', 'top-quality', 'performance']</code></td><td>&minus;12.8079</td><td>&minus;13.4869</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-section plain-headings">
+      <h3>Classifying Small Documents</h3>
+      <p><strong>Again, apply this function to a few very small documents and make sure that you get the output you'd expect.</strong></p>
+
+      <div class="method-block">
+        <h4>Results</h4>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Document</th><th>classify_nb output</th></tr>
+            <tr><td><code>['great']</code></td><td>pos</td></tr>
+            <tr><td><code>['bad']</code></td><td>neg</td></tr>
+            <tr><td><code>['i', 'love', 'it']</code></td><td>pos</td></tr>
+            <tr><td><code>['waste', 'of', 'money']</code></td><td>neg</td></tr>
+            <tr><td><code>['highly', 'recommend']</code></td><td>pos</td></tr>
+            <tr><td><code>['very', 'disappointed']</code></td><td>neg</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <h2>Evaluating the Classifier</h2>
+    <p><strong>Write a function that classifies each document in the test set and returns the list of predicted sentiment labels. Next, we compute the accuracy, i.e. the number of correctly classified documents divided by the total number of documents. What accuracy do you get when evaluating the classifier on the test set?</strong></p>
+
+    <div class="point-section">
+      <div class="method-block">
+        <h4>Answer</h4>
+        <p><strong>Test accuracy: 0.8154 (81.54%)</strong> on the 2,383 evaluation documents.</p>
+      </div>
+    </div>
+
+    <h2>Error Analysis</h2>
+    <p><strong>Find a few misclassified documents and comment on why you think they were hard to classify. For instance, you may select a few short documents where the probabilities were particularly high in the wrong direction.</strong></p>
+
+    <div class="point-section">
+      <div class="method-block">
+        <h4>Selection</h4>
+        <p>118 evaluation documents (with at most 60 tokens) were misclassified. The most confidently wrong answers are listed below, each with the words that influenced the wrong answer.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Document 1: true = neg, guessed = pos, P(guess | d) = 1.0000</h4>
+        <div class="cell review">i live in south africa where the series appeared 20 years ago.thanks to amazon i was able to relive the wonder of archie bunker where each episode provides laughs from one of the family , each of whom is brilliantly cast.i have series 3&amp;4 and now want 1&amp;2.do n't wait any longer , 24 episodes of absolute delight await you</div>
+        <p>Strongest words for the wrong class: <code>brilliantly</code>, <code>delight</code>, <code>episode</code>, <code>relive</code>, <code>await</code>, <code>provides</code>, <code>family</code>, <code>episodes</code></p>
+        <p><strong>Comment:</strong> The text uses positive words ("brilliantly cast", "absolute delight"). It is difficult to understand this review as negative.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Document 2: true = neg, guessed = pos, P(guess | d) = 0.9999</h4>
+        <div class="cell review">this bag is very small . my canon 20d fits nicely with a small lens , but you cannot fit more than one lens with the camera body . we kept the bag for informal use when we only need the body and one lens to avoid always having to carry a bulky bag</div>
+        <p>Strongest words for the wrong class: <code>fits</code>, <code>nicely</code>, <code>carry</code>, <code>lens</code>, <code>informal</code>, <code>always</code>, <code>20d</code>, <code>bag</code></p>
+        <p><strong>Comment:</strong> The complaint is mild and uses more specific terminology:  "very small" and "cannot fit" as opposed to "bad". Meanwhile "fits" and "nicely" suggest a positive sentiment.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Document 3: true = pos, guessed = neg, P(guess | d) = 0.9999</h4>
+        <div class="cell review">got this on ebay for $18 last year - a great deal . i am only bothering to rate this as it seems ridiculous that is rated below two other rather shoddy grant collections because of the holiday backlash . objectively rating the content instead of the marketing would work for me</div>
+        <p>Strongest words for the wrong class: <code>ridiculous</code>, <code>$18</code>, <code>shoddy</code>, <code>marketing</code>, <code>bothering</code>, <code>holiday</code>, <code>instead</code>, <code>below</code></p>
+        <p><strong>Comment:</strong> This positive review uses words which on its own, seem like negative connotations (using "ridiculous", "shoddy", "bothering" but at other negative reviews, not the product). The incorrect label happens because the bag-of-words assumption ignores position.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Document 4: true = pos, guessed = neg, P(guess | d) = 0.9997</h4>
+        <div class="cell review">i bought zonealarm internet security suite for the included zonealarm pro firewall ( it cost much less that way ) . if i did n't already have norton antivirus , i 'd use the antivirus , too</div>
+        <p>Strongest words for the wrong class: <code>zonealarm</code>, <code>norton</code>, <code>antivirus</code>, <code>internet</code>, <code>security</code>, <code>did</code>, <code>n't</code>, <code>cost</code></p>
+        <p><strong>Comment:</strong> The review uses no positive/negative sentiment words, so the decision is done by topic words. Product names such as "zonealarm", "norton" and "antivirus" might be more associated with negative connotations. The negation "n't" also leans negative.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Document 5: true = pos, guessed = neg, P(guess | d) = 0.9995</h4>
+        <div class="cell review">i saw this film a few years back on tv and really enjoyed it , but i notice it is presented in full screen format . is this the correct aspect ratio ? i hate to buy a botched pan / scan version....can anyone help me out ? ? ? ? ? ?</div>
+        <p>Strongest words for the wrong class: <code>pan</code>, <code>botched</code>, <code>hate</code>, <code>?</code>, <code>buy</code>, <code>presented</code>, <code>scan</code>, <code>back</code></p>
+        <p><strong>Comment:</strong> </p>
+        <p><strong>Comment:</strong> This review mixes both positive and negative words. The reviewer describes the film as "really enjoyed", and uses a lot of negative words for the DVD format, not the movie (eg. "hate" and "botched"). The repeated question marks (typically associated with negative reviews) also add up the log likelihood each time.</p>
+      </div>
+
+      <div class="method-block">
+        <h4>Summary</h4>
+        <p>The confident errors fall into a few groups:</p>
+        <ul>
+            <li><strong>Right connotation, wrong context:</strong> Many of these reviews use negative words aimed at something other than the product, which doesn't evaluate properly in a bag of words.</li>
+            <li><strong>Language indirectly associated with positive/negative connotation:</strong> Things like antivirus names, question marks (?), and "botched" are more present in negative reviews, even though they can have rather neutral intent.</li>
+          <li><strong>Complex text:</strong> The review genuinely seems the opposite of the provided label.</li>
+        </ul>
+      </div>
+    </div>
+
+    <br><br><br>
+
+    <a href="../index.html">&larr; Back to portfolio</a>
+  </main>
+</body>
+</html>
